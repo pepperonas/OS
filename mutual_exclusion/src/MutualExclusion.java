@@ -11,8 +11,9 @@ public class MutualExclusion {
         if (args.length != 1) {
             System.err.println("usage: java MutualExclusion <NoThreadsInCriticalSection >");
             System.exit(1);
-        } else
+        } else {
             noThreadsInCriticalSection = Integer.parseInt(args[0]);
+        }
         Semaphore mutex = new Semaphore(noThreadsInCriticalSection);
         for (int i = 1; i <= 10; i++) {
             new MutexThread(mutex, "Thread " + i);
@@ -40,6 +41,7 @@ class MutexThread extends Thread {
             try {
                 sleep((int) (Math.random() * 100));
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
             mutex.v();
             System.out.println("kritischen Abschnitt verlassen: " + getName());
@@ -54,8 +56,9 @@ class Semaphore {
 
 
     Semaphore(int init) {
-        if (init < 0)
+        if (init < 0) {
             init = 0;
+        }
         value = init;
     }
 
@@ -68,6 +71,7 @@ class Semaphore {
             try {
                 wait();
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         value--;

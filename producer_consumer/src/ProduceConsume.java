@@ -38,6 +38,7 @@ class Buffer {
             try {
                 wait();
             } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         available = false;

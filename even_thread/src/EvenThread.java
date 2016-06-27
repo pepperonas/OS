@@ -122,8 +122,9 @@ class Semaphore {
 
 
     Semaphore(int init) {
-        if (init < 0)
+        if (init < 0) {
             init = 0;
+        }
         value = init;
     }
 
@@ -150,4 +151,42 @@ class Semaphore {
         value++;
         notify();
     }
+
+
+    /**
+     * DOWN (additive)
+     */
+    synchronized void p(int x) {
+        if (x <= 0) {
+            return;
+        }
+        while (value - x < 0) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        value -= x;
+    }
+
+
+    /**
+     * UP (additive)
+     */
+    synchronized void v(int x) {
+        if (x <= 0) {
+            return;
+        }
+        value += x;
+        notifyAll(); // NOT notify
+    }
+
+
+    public void change(int x) {
+        if (x > 0) {
+            v(x);
+        } else if (x < 0) p(-x);
+    }
+
 }

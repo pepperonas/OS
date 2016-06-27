@@ -55,7 +55,9 @@ class ParkingGarage {
 
 
     ParkingGarage(int places) {
-        if (places < 0) places = 0;
+        if (places < 0) {
+            places = 0;
+        }
         this.places = places;
     }
 
